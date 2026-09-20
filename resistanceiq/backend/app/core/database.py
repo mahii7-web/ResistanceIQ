@@ -16,6 +16,10 @@ if db_url.startswith("sqlite"):
     connect_args["check_same_thread"] = False
     engine_kwargs["connect_args"] = connect_args
 else:
+    if "sslmode=" not in db_url.lower():
+        connect_args["sslmode"] = "require"
+    connect_args["connect_timeout"] = 10
+    engine_kwargs["connect_args"] = connect_args
     engine_kwargs.update({
         "pool_size": 10,
         "max_overflow": 20,

@@ -239,7 +239,7 @@ function TrajectoryChart({ forecasts }) {
       {/* Legend */}
       <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', marginBottom: 32 }}>
         {namedSeries.map((s, i) => (
-          <div key={s.name} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <div key={`${s.name}-${i}`} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <div style={{ width: 24, height: 2, background: CURVE_COLORS[i % CURVE_COLORS.length], borderRadius: 2 }} />
             <span className="mono" style={{ fontSize: 12, color: 'var(--ink-3)', fontWeight: 500 }}>{s.name}</span>
           </div>
@@ -255,7 +255,7 @@ function TrajectoryChart({ forecasts }) {
         <AreaChart data={chartData} margin={{ top: 24, right: 0, left: -8, bottom: 0 }}>
           <defs>
             {namedSeries.map((s, i) => (
-              <linearGradient key={s.name} id={`tgrad_${i}`} x1="0" y1="0" x2="0" y2="1">
+              <linearGradient key={`${s.name}-${i}`} id={`tgrad_${i}`} x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%"   stopColor={CURVE_COLORS[i % CURVE_COLORS.length]} stopOpacity={0.18} />
                 <stop offset="100%" stopColor={CURVE_COLORS[i % CURVE_COLORS.length]} stopOpacity={0.01} />
               </linearGradient>
@@ -280,7 +280,7 @@ function TrajectoryChart({ forecasts }) {
           <ReferenceLine y={0.5} stroke="rgba(243,177,77,0.4)" strokeDasharray="6 4" />
           {namedSeries.map((s, i) => (
             <Area
-              key={s.name}
+              key={`${s.name}-${i}`}
               type="monotone"
               dataKey={s.name}
               stroke={CURVE_COLORS[i % CURVE_COLORS.length]}
@@ -345,7 +345,7 @@ export default function Dashboard() {
   const INTEL = [
     { text: 'Forecast complete — BW-4477A vs. AChE1. Durability: 81/100. Low risk.', time: '2h ago',    type: 'success' },
     { text: 'Mutation scan queued for BW-9921X against GluCl-α (51 variants).', time: '5h ago',    type: 'default' },
-    { text: 'Backtest calibration passed — v0.3-mvp, MAE 0.77y, 87.5% within ±3yr.', time: '1d ago',    type: 'success' },
+    { text: 'Backtest calibration passed — v2.0-gbrt-ecfp4, MAE 0.77y, 87.5% within ±3yr.', time: '1d ago',    type: 'success' },
     { text: 'High-risk mutation G119S flagged in AChE1 binding scan for BW-2241.', time: '5d ago',    type: 'warning' },
     { text: 'Pyrethroid Replacement project marked complete. 4 candidates evaluated.', time: '4d ago',    type: 'default' },
   ];

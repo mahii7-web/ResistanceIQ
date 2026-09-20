@@ -2,8 +2,8 @@
 
 [![Python](https://img.shields.io/badge/Python-3.11%20%7C%203.12%20%7C%203.14-blue.svg)](https://python.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688.svg)](https://fastapi.tiangolo.com)
-[![React](https://img.shields.io/badge/React-18-61DAFB.svg)](https://reactjs.org)
-[![Vite](https://img.shields.io/badge/Vite-6-646CFF.svg)](https://vitejs.dev)
+[![React](https://img.shields.io/badge/React-19-61DAFB.svg)](https://react.dev)
+[![Vite](https://img.shields.io/badge/Vite-8-646CFF.svg)](https://vite.dev)
 [![Status](https://img.shields.io/badge/Scientific%20Status-REQUIRES%20VALIDATION-orange.svg)]()
 [![Mode](https://img.shields.io/badge/Operational%20Mode-RESEARCH%20%2F%20VALIDATION%20MODE-yellow.svg)]()
 

@@ -105,27 +105,22 @@ export default function ForgotPassword() {
       e.preventDefault();
       e.stopPropagation();
     }
-    console.log('[ForgotPassword] handleSendCode triggered with email:', email);
     setErrorMessage('');
     setInfoMessage('');
 
     const cleanEmail = email.trim().toLowerCase();
     if (!cleanEmail || !/^\S+@\S+\.\S+$/.test(cleanEmail)) {
-      console.warn('[ForgotPassword] Invalid email format:', cleanEmail);
       setErrorMessage('Please enter a valid research email address.');
       return;
     }
 
     setIsLoading(true);
     try {
-      console.log('[ForgotPassword] Calling forgotPassword API...');
       const res = await forgotPassword(cleanEmail);
-      console.log('[ForgotPassword] API success response:', res);
       setInfoMessage(res.message || 'Verification email requested. Check your inbox.');
       setStep('CODE_VERIFICATION');
       setResendCooldown(30);
     } catch (err) {
-      console.error('[ForgotPassword] API error response:', err);
       setErrorMessage(
         err.message || "We couldn't send the verification email right now. Please try again."
       );

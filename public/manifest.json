@@ -1,0 +1,19 @@
+{
+  "short_name": "ResistanceIQ",
+  "name": "ResistanceIQ – AI-Powered Pesticide Resistance Forecasting",
+  "description": "Scientific intelligence platform for pesticide resistance forecasting, molecular evaluation, and research reproducibility.",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#02070C",
+  "theme_color": "#05070B",
+  "display": "standalone",
+  "orientation": "any",
+  "categories": ["science", "productivity", "utilities"]
+}

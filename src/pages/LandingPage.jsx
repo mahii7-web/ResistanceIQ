@@ -170,7 +170,7 @@ export default function LandingPage() {
       classification: 'Neonicotinoid (Substituted Chloropyridinyl)',
       formula: 'C9H10ClN5O2',
       moa: '4A (nAChR Modulator)',
-      smiles: 'C1=CN=C(C)Cl)C=C1NC(=N)NCC2=NC=C(C=C)Cl',
+      smiles: 'C1CN(C(=N[N+](=O)[O-])N1)CC2=CN=C(C=C2)Cl',
       target: 'Nicotinic Acetylcholine Receptor (nAChR)',
       targetGene: 'nAChR α1/β2 subunit',
       pest: 'Myzus persicae',
@@ -984,7 +984,7 @@ export default function LandingPage() {
                   <div className="text-[10px] text-[#7C8A9A]">Python 3.11, Uvicorn, ASGI</div>
                 </div>
                 <div className="p-3 rounded-xl bg-[#03080E] border border-white/[0.05]">
-                  <div className="font-bold text-white text-[11.5px] mb-0.5">React 19 & Vite 6</div>
+                  <div className="font-bold text-white text-[11.5px] mb-0.5">React 19 & Vite 8</div>
                   <div className="text-[10px] text-[#7C8A9A]">TailwindCSS, Lucide, Recharts</div>
                 </div>
                 <div className="p-3 rounded-xl bg-[#03080E] border border-white/[0.05]">

@@ -47,7 +47,7 @@ export default function RiskCurveChart({ data, multiSeries, height = 260 }) {
       <AreaChart data={chartData} margin={{ top: 8, right: 8, left: -10, bottom: 0 }}>
         <defs>
           {seriesKeys.map((key, i) => (
-            <linearGradient key={key} id={`grad_${i}`} x1="0" y1="0" x2="0" y2="1">
+            <linearGradient key={`${key}-${i}`} id={`grad_${i}`} x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%"   stopColor={COLORS[i % COLORS.length]} stopOpacity={0.25} />
               <stop offset="100%" stopColor={COLORS[i % COLORS.length]} stopOpacity={0.01} />
             </linearGradient>
@@ -79,7 +79,7 @@ export default function RiskCurveChart({ data, multiSeries, height = 260 }) {
         />
         {seriesKeys.map((key, i) => (
           <Area
-            key={key}
+            key={`${key}-${i}`}
             type="monotone"
             dataKey={key}
             name={key === 'resistance_probability' ? 'Resistance Probability' : key}

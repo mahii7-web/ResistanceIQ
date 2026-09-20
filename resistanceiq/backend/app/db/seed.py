@@ -152,8 +152,24 @@ def init_database_and_canonical_graph():
     - Standard Baseline Molecules
     This runs in ALL environments on server startup (development, staging, production).
     """
-    Base.metadata.create_all(bind=engine)
-    ensure_schema_upgrades()
+    try:
+        Base.metadata.create_all(bind=engine)
+        ensure_schema_upgrades()
+    except Exception as exc:
+        is_postgres = "postgres" in engine.dialect.name
+        if is_postgres:
+            print(
+                "\n" + "=" * 70 + "\n"
+                "[DATABASE CONNECTION FAILURE AT STARTUP]\n"
+                "The application failed to connect to the configured PostgreSQL database.\n"
+                "If deploying on Render with Supabase:\n"
+                "1. Verify that your Supabase project is active (not paused or deleted).\n"
+                "2. Navigate to your Supabase Project Settings -> Database -> Connection String.\n"
+                "3. Copy the connection URI and update DATABASE_URL in Render Dashboard Environment Settings.\n"
+                "4. If using connection pooling, ensure the project reference in 'postgres.<ref>' matches your active project.\n"
+                + "=" * 70 + "\n"
+            )
+        raise exc
 
     db = SessionLocal()
     try:
