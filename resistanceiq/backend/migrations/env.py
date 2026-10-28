@@ -10,12 +10,10 @@ from alembic.ddl.impl import DefaultImpl
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from app.core.config import settings
-from app.core.database import Base
+from app.core.database import Base, normalize_database_url
 import app.models  # load all declarative models
 
-db_url = settings.DATABASE_URL
-if db_url.startswith("postgres://"):
-    db_url = db_url.replace("postgres://", "postgresql://", 1)
+db_url = normalize_database_url(settings.DATABASE_URL)
 
 # Ensure alembic version table definition supports long revision identifiers (>32 chars)
 def custom_version_table_impl(

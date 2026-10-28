@@ -22,7 +22,7 @@ COPY backend/requirements.txt ./backend-requirements.txt
 RUN pip install --upgrade pip && pip install -r ./backend-requirements.txt
 
 # Build-time verification: ensure critical runtime dependencies exist in the image
-RUN python -c "import matplotlib; import email_validator; from pydantic import EmailStr; print('BUILD VERIFY: matplotlib and pydantic email validation installed successfully (matplotlib=' + matplotlib.__version__ + ')')"
+RUN python -c "import psycopg; import matplotlib; import email_validator; from pydantic import EmailStr; print('BUILD VERIFY: psycopg=' + psycopg.__version__ + ', matplotlib and pydantic email validation installed successfully (matplotlib=' + matplotlib.__version__ + ')')"
 
 # Copy application source code
 COPY backend ./backend

@@ -2,9 +2,22 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 from app.core.config import settings
 
-db_url = settings.DATABASE_URL
-if db_url.startswith("postgres://"):
-    db_url = db_url.replace("postgres://", "postgresql://", 1)
+def normalize_database_url(url: str) -> str:
+    """
+    Safely normalizes database connection URLs for PostgreSQL and SQLite.
+    Normalizes legacy 'postgres://' or driverless 'postgresql://' to modern 'postgresql+psycopg://'
+    for SQLAlchemy 2.0 with Psycopg 3. Preserves explicit driver schemes (e.g. postgresql+psycopg2://).
+    """
+    if not url:
+        return url
+    if url.startswith("postgres://"):
+        return url.replace("postgres://", "postgresql+psycopg://", 1)
+    if url.startswith("postgresql://"):
+        return url.replace("postgresql://", "postgresql+psycopg://", 1)
+    return url
+
+
+db_url = normalize_database_url(settings.DATABASE_URL)
 
 connect_args = {}
 engine_kwargs = {

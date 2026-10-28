@@ -16,10 +16,12 @@ def run_diagnostic():
         print("Usage: $env:DATABASE_URL=\"postgresql://...\" ; python scripts/test_postgres_connection.py")
         sys.exit(1)
 
-    # Normalize dialect for parsing if needed
+    # Normalize dialect for SQLAlchemy 2.0 with Psycopg 3
     normalized_url = raw_url
     if normalized_url.startswith("postgres://"):
-        normalized_url = normalized_url.replace("postgres://", "postgresql://", 1)
+        normalized_url = normalized_url.replace("postgres://", "postgresql+psycopg://", 1)
+    elif normalized_url.startswith("postgresql://"):
+        normalized_url = normalized_url.replace("postgresql://", "postgresql+psycopg://", 1)
 
     if normalized_url.startswith("sqlite"):
         print("[INFO] DATABASE_URL is configured for SQLite.")
@@ -79,33 +81,48 @@ def run_diagnostic():
         print(f"  -> TCP CONNECT ({hostname}:{port}): FAIL ({tcpe})")
         sys.exit(1)
 
-    # Step 3: psycopg2 Direct Authentication Test
-    print("\n[STEP 3/4] Testing psycopg2 DB-API Authentication & SELECT 1...")
+    # Step 3: psycopg DB-API Authentication Test
+    print("\n[STEP 3/4] Testing psycopg/psycopg2 DB-API Authentication & SELECT 1...")
+    driver_name = "psycopg"
     try:
-        import psycopg2
         raw_password = unquote(parsed.password) if parsed.password else ""
-        conn = psycopg2.connect(
-            host=hostname,
-            port=port,
-            user=username,
-            password=raw_password,
-            dbname=dbname,
-            sslmode=sslmode,
-            connect_timeout=10,
-        )
+        try:
+            import psycopg
+            conn = psycopg.connect(
+                host=hostname,
+                port=port,
+                user=username,
+                password=raw_password,
+                dbname=dbname,
+                sslmode=sslmode,
+                connect_timeout=10,
+            )
+            driver_name = "psycopg (v3)"
+        except ImportError:
+            import psycopg2
+            conn = psycopg2.connect(
+                host=hostname,
+                port=port,
+                user=username,
+                password=raw_password,
+                dbname=dbname,
+                sslmode=sslmode,
+                connect_timeout=10,
+            )
+            driver_name = "psycopg2"
         cur = conn.cursor()
         cur.execute("SELECT 1")
         row = cur.fetchone()
         cur.close()
         conn.close()
         if row and row[0] == 1:
-            print("  -> PSYCOPG2 AUTH & SELECT 1: PASS")
+            print(f"  -> {driver_name.upper()} AUTH & SELECT 1: PASS")
         else:
-            print(f"  -> PSYCOPG2 UNEXPECTED RESULT: {row}")
+            print(f"  -> {driver_name.upper()} UNEXPECTED RESULT: {row}")
     except Exception as dbe:
-        print(f"  -> PSYCOPG2 AUTH / QUERY: FAIL")
+        print(f"  -> {driver_name.upper()} AUTH / QUERY: FAIL")
         print(f"     Error Type: {type(dbe).__name__}")
-        # Strip potential passwords from error message if psycopg2 includes connection string
+        # Strip potential passwords from error message
         clean_err = str(dbe).replace(raw_password, "[REDACTED]") if parsed.password else str(dbe)
         print(f"     Details:    {clean_err.strip()}")
         
